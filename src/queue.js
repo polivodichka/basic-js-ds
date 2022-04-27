@@ -39,6 +39,13 @@ class Queue {
     return firstValue;
   }
 }
+const queue = new Queue();
+queue.enqueue(5);
+queue.enqueue(6);
+queue.enqueue(7);
+
+console.log(queue.getUnderlyingList())
+console.log(queue.dequeue())
 
 module.exports = {
   Queue

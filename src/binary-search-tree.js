@@ -23,14 +23,14 @@ class BinarySearchTree {
 
   insert(node, newNode) {
     if (node.data > newNode.data) {
-      if(node.left === null) node.left = newNode;
+      if (node.left === null) node.left = newNode;
       else this.insert(node.left, newNode);
     }
 
     else {
-      if(node.right === null)
+      if (node.right === null)
         node.right = newNode;
-      else this.insert(node.right,newNode);
+      else this.insert(node.right, newNode);
     }
   }
 
@@ -38,18 +38,31 @@ class BinarySearchTree {
     return this.find(data) ? true : false;
   }
 
-  find(data, node = this.currentNode){    
-    if(node === null) return null;
+  find(data, node = this.currentNode) {
+    if (node === null) return null;
 
     if (node.data > data) return this.find(data, node.left);
     else if (node.data < data) return this.find(data, node.right);
     else return node;
   }
-
-  remove(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-    if (!this.has(data)) return false;
+  remove(data, node = this.currentNode) {
+    if (node === null)
+      return node;
+    if (data < node.data)
+      node.left = this.remove (data, node.left);
+    else if (data > node.data)
+      node.right = this.remove (data, node.right);
+    else if (node.left != null && node.right != null) {
+      node.data = this.min(node.right);
+      node.right = this.remove (node.data, node.right);
+    }
+    else if (node.left != null)
+      node = node.left;
+    else if (node.right != null)
+      node = node.right;
+    else
+      node = null;
+    return node
   }
 
   min(node = this.currentNode, min = null) {
@@ -60,8 +73,8 @@ class BinarySearchTree {
     return this.min(node.left, min);
   }
 
-  max(node = this.currentNode, max = null) {  
-    
+  max(node = this.currentNode, max = null) {
+
     if (node.right === null) return max;
 
     max = node.right.data;
@@ -72,3 +85,17 @@ class BinarySearchTree {
 module.exports = {
   BinarySearchTree
 };
+
+
+const tree = new BinarySearchTree();
+tree.add(1);
+tree.add(2);
+tree.add(3);
+tree.add(4);
+tree.add(5);
+console.log(tree.root().data);
+console.log(tree.min());
+console.log(tree.max());
+tree.remove(5);
+console.log(tree.has(5));
+console.log(tree.max());
